@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "110147617748",
+    "project_id": "qr-code-scanner-and-gene-58152",
+    "storage_bucket": "qr-code-scanner-and-gene-58152.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110147617748:android:a829d1d0466d3a7b6ecc41",
+        "android_client_info": {
+          "package_name": "com.solinovation.qrcodescanner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfAM0Bv6S_lkpq9IE_ld6CaDTLgwCOQi8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
