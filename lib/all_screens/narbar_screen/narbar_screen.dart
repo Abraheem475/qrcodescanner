@@ -1,80 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:qrcodescanner/all_screens/setting_screen/setting_screen.dart';
-import 'package:qrcodescanner/provider_classes/qr_scanner_provider_class/qr_scanner_provider_class.dart';
-import 'package:qrcodescanner/qr_code_generator_items/qr_code_generator_items.dart';
+import 'package:qrcodescanner/helper_classes/images_path/images_path.dart';
 import '../../helper_classes/colors_classes.dart';
-import '../../qr_code_scanner_screen/qr_code_scanner_screen.dart';
+import '../../provider_classes/navbar_provider.dart';
 
-class NarBarScreen extends StatefulWidget {
-  const NarBarScreen({super.key});
-
-  @override
-  State<NarBarScreen> createState() => _NarBarScreenState();
-}
-
-class _NarBarScreenState extends State<NarBarScreen> {
-  int myIndex = 0;
-
-  List<Widget>myList = [
-    const QRCodeGeneratorItems(),
-    const SettingScreen(),
-    // const QRCodeScanner(),
-  ];
+class NavBarScreen extends StatelessWidget {
+  NavBarScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: myList[myIndex],
-        bottomNavigationBar: BottomAppBar(
-          height: 85.0,
-          color: whiteColor,
-          elevation: 0.0,
-          shape:  const CircularNotchedRectangle(),
-          notchMargin: 0.01,
-          child: Container(
-            decoration: const BoxDecoration(
-                color: Colors.green,
-                border: Border(
-                    top: BorderSide(
-                      color: Colors.grey,
-                      width: 0.1,
-                    )
-                )
+      body: Consumer<BottomBarProvider>(
+        builder: (context, value, child) {
+          return value.myList[value.myIndex];
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Consumer<BottomBarProvider>(
+        builder: (context, value, child) {
+          return FloatingActionButton(
+            onPressed: () {
+              value.changeMyIndex(1);
+            },
+            child: Container(
+              width: 60.0,
+              height: 60.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                gradient: gradientColor,
+              ),
+              child:  Image.asset(ImagesPath.scanButton),
             ),
-            child: BottomNavigationBar(
-                selectedItemColor: appColor,
-                unselectedItemColor: Colors.grey,
-                onTap: (index){
-                  setState(() {
-                    myIndex = index;
-                  });
-                },
-                currentIndex: myIndex,
-                items: const [
-                  BottomNavigationBarItem(icon: Icon(Icons.home_filled,),label: "Home"),
-                  // BottomNavigationBarItem(activeIcon: null, icon: Icon(null),label: ""),
-                  BottomNavigationBarItem(icon: Icon(Icons.settings),label: "Setting"),
-                ]),
+          );
+        },
+      ),
+      bottomNavigationBar: BottomAppBar(
+        height: 83.0,
+        color: Colors.white,
+        elevation: 0.0,
+        notchMargin: 7.0,
+        shape: const CircularNotchedRectangle(),
+        child: Container(
+          height: 60.0,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade400,
+                blurRadius: 20.0,
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30.0),
+            child: Consumer<BottomBarProvider>(
+              builder: (context, value, child) {
+                return BottomNavigationBar(
+                  selectedItemColor: appColor,
+                  unselectedItemColor: Colors.grey,
+                  onTap: (index) {
+                    if (value.myIndex != index) {
+                      value.changeMyIndex(index);
+                    }
+                  },
+                  currentIndex: value.myIndex,
+                  items: const [
+                    BottomNavigationBarItem(icon: Icon(Icons.qr_code_2_sharp,size: 25.0,), label: "Generator",),
+                    BottomNavigationBarItem(icon: Icon(null), label: ""),
+                    BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Setting"),
+                  ],
+                );
+              },
+            ),
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-        floatingActionButton: Consumer<QRProviderScanner>(
-            builder: (context, value, child) {
-              Provider.of<QRProviderScanner>(context, listen: false);
-              return FloatingActionButton(
-                onPressed: () {
-                  // myIndex = 2;
-                  // value.scanBarcodeNormal();
-                  Get.to(() => const QRCodeScanner());
-                },
-                hoverElevation: 10.0,
-                splashColor: Colors.grey,
-                child: const Icon(Icons.qr_code, size: 40.0),
-              );
-            }
-        )
+      ),
     );
   }
 }

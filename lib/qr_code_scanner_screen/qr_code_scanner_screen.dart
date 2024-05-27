@@ -14,28 +14,33 @@ class QRCodeScanner extends StatelessWidget {
     var qrProviderScanner = Provider.of<QRProviderScanner>(context,listen: false);
     return Scaffold(
       backgroundColor: whiteColor,
-      appBar: CustomAppBar().customAppBar(Icons.arrow_back, "QR Code Scanner"),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-           Consumer<QRProviderScanner>(builder: (context, value ,child){
-             return Link(
-                 target: LinkTarget.self,
-                 uri: Uri.parse(value.data),
-                 builder: (BuildContext ctx,  FollowLink? openLink){return
-                   TextButton(
-                       onPressed: () {
-                         openLink!();
-                       },
-                       child: Text(value.data,style: const TextStyle(color: Colors.black),));});
-           }),
-           const SizedBox(height: 20.0,),
-            CustomButton().customButton(onPress: (){
-              qrProviderScanner.scanBarcodeNormal();
-            }, text: "Scan QR Code"),
-          ],
-        ),
+      body: Column(
+        children: [
+          CustomAppBar().customAppBar(isIcon: false,text: "QR Code Scanner"),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+               Consumer<QRProviderScanner>(builder: (context, value ,child){
+                 return Link(
+                     target: LinkTarget.self,
+                     uri: Uri.parse(value.data),
+                     builder: (BuildContext ctx,  FollowLink? openLink){return
+                       TextButton(
+                           onPressed: () {
+                             openLink!();
+                           },
+                           child: Text(value.data,style: const TextStyle(color: Colors.black),));});
+               }),
+               const SizedBox(height: 20.0,),
+                CustomButton().customButton(onPress: (){
+                  qrProviderScanner.scanBarcodeNormal();
+                }, text: "Scan QR Code", height: 50.0),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
